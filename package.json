@@ -1,0 +1,18 @@
+{
+  "name": "@inbridge/open-invoice-format",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "This package is a structured invoice format for everyone to replace ZUGFeRD and XRechnung. Its more future based and easier to understand, use and also provides examples how to use.",
+  "author": {
+    "name": "Alexander Funk u. Daniel Amzovski GbR & Samuel Amzovski",
+    "email": "contact@inbridge.io"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "ts-json-schema-generator": "^2.3.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}

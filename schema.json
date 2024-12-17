@@ -1,0 +1,2285 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "RecurringInvoice": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        },
+        "type": {
+          "type": "string",
+          "const": "recurring_invoice"
+        },
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData"
+        },
+        "paymentInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SEPAPaymentInformation"
+            },
+            {
+              "$ref": "#/definitions/SEPAMandatePaymentInformation"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvoiceItem"
+          }
+        },
+        "subscriptionId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "createdAt",
+        "id",
+        "items",
+        "paymentInformation",
+        "servicePeriod",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "IRecurringInvoice": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1",
+          "description": "The version of the invoice schema, you can find the schema at the"
+        },
+        "type": {
+          "type": "string",
+          "const": "recurring_invoice"
+        },
+        "id": {
+          "type": "string",
+          "description": "The id of the invoice"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the invoice was created"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData",
+          "description": "When this is a correcting invoice, this field contains the data of the invoice that will be corrected"
+        },
+        "paymentInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ISEPAPaymentInformation"
+            },
+            {
+              "$ref": "#/definitions/ISEPAMandatePaymentInformation"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvoiceItem"
+          }
+        },
+        "subscriptionId": {
+          "type": "string",
+          "description": "The id of the subscription that this invoice is for"
+        }
+      },
+      "required": [
+        "createdAt",
+        "id",
+        "items",
+        "paymentInformation",
+        "servicePeriod",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "IBaseInvoice": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "0.1",
+          "description": "The version of the invoice schema, you can find the schema at the"
+        },
+        "type": {
+          "$ref": "#/definitions/InvoiceType",
+          "description": "The type of the invoice"
+        },
+        "id": {
+          "type": "string",
+          "description": "The id of the invoice"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the invoice was created"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData",
+          "description": "When this is a correcting invoice, this field contains the data of the invoice that will be corrected"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "id",
+        "createdAt"
+      ],
+      "additionalProperties": false
+    },
+    "InvoiceType": {
+      "type": "string",
+      "enum": [
+        "invoice",
+        "partial_invoice",
+        "recurring_invoice",
+        "cancellation_invoice"
+      ],
+      "description": "Enum representing the different types of invoices.\n\n- 'invoice': A standard invoice issued after the completion of a transaction or project.              It summarizes all charges and confirms the total amount due.              Example: An invoice sent after delivering a product or service.\n\n- 'partial_invoice': A partial invoice issued for a portion of the total amount due.                      Typically used in cases where payments are split into installments or milestones.                      Example: An invoice for the first phase of a project.\n\n- 'recurring_invoice': A recurring invoice issued at regular intervals for ongoing services or subscriptions.\n\n- 'cancellation_invoice': An invoice issued to cancel a previous invoice."
+    },
+    "CorrectingInvoiceData": {
+      "type": "object",
+      "properties": {
+        "previousId": {
+          "type": "string",
+          "description": "The id of the invoice that this invoice is correcting"
+        }
+      },
+      "required": [
+        "previousId"
+      ],
+      "additionalProperties": false
+    },
+    "IServicePeriod": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "servicePeriod"
+      ],
+      "additionalProperties": false
+    },
+    "ISEPAPaymentInformation": {
+      "type": "object",
+      "properties": {
+        "debitor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/IPostalAddress%3CBusinessContact%3E"
+            },
+            {
+              "$ref": "#/definitions/IPostalAddress%3CPrivateContact%3E"
+            }
+          ]
+        },
+        "creditor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string",
+                  "description": "D-U-N-S number"
+                },
+                "vatId": {
+                  "type": "string",
+                  "description": "VAT identification number"
+                },
+                "taxId": {
+                  "type": "string",
+                  "description": "Tax number"
+                },
+                "contact": {
+                  "$ref": "#/definitions/BusinessContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string",
+                  "description": "D-U-N-S number"
+                },
+                "vatId": {
+                  "type": "string",
+                  "description": "VAT identification number"
+                },
+                "taxId": {
+                  "type": "string",
+                  "description": "Tax number"
+                },
+                "contact": {
+                  "$ref": "#/definitions/PrivateContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "debitor",
+        "creditor"
+      ],
+      "additionalProperties": false
+    },
+    "IPostalAddress<BusinessContact>": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+        },
+        "zip": {
+          "type": "string",
+          "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+        },
+        "country": {
+          "$ref": "#/definitions/CountryCode",
+          "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "duns": {
+          "type": "string",
+          "description": "D-U-N-S number"
+        },
+        "vatId": {
+          "type": "string",
+          "description": "VAT identification number"
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Tax number"
+        },
+        "contact": {
+          "$ref": "#/definitions/BusinessContact"
+        }
+      },
+      "required": [
+        "city",
+        "companyName",
+        "contact",
+        "country",
+        "street",
+        "vatId",
+        "zip"
+      ],
+      "additionalProperties": false
+    },
+    "IAddress": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+        },
+        "zip": {
+          "type": "string",
+          "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+        },
+        "country": {
+          "$ref": "#/definitions/CountryCode",
+          "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+        }
+      },
+      "required": [
+        "street",
+        "city",
+        "zip",
+        "country"
+      ],
+      "additionalProperties": false,
+      "description": "Represents a physical address consisting of street, city, zip code, and country. This class is used to store and manage address details for various use cases like shipping, billing, etc."
+    },
+    "CountryCode": {
+      "type": "string",
+      "enum": [
+        "AF",
+        "AL",
+        "DZ",
+        "AS",
+        "AD",
+        "AO",
+        "AI",
+        "AQ",
+        "AG",
+        "AR",
+        "AM",
+        "AW",
+        "AU",
+        "AT",
+        "AZ",
+        "BS",
+        "BH",
+        "BD",
+        "BB",
+        "BY",
+        "BE",
+        "BZ",
+        "BJ",
+        "BM",
+        "BT",
+        "BO",
+        "BQ",
+        "BA",
+        "BW",
+        "BV",
+        "BR",
+        "IO",
+        "BN",
+        "BG",
+        "BF",
+        "BI",
+        "CV",
+        "KH",
+        "CM",
+        "CA",
+        "KY",
+        "CF",
+        "TD",
+        "CL",
+        "CN",
+        "CX",
+        "CC",
+        "CO",
+        "KM",
+        "CD",
+        "CG",
+        "CK",
+        "CR",
+        "HR",
+        "CU",
+        "CW",
+        "CY",
+        "CZ",
+        "CI",
+        "DK",
+        "DJ",
+        "DM",
+        "DO",
+        "EC",
+        "EG",
+        "SV",
+        "GQ",
+        "ER",
+        "EE",
+        "SZ",
+        "ET",
+        "FK",
+        "FO",
+        "FJ",
+        "FI",
+        "FR",
+        "GF",
+        "PF",
+        "TF",
+        "GA",
+        "GM",
+        "GE",
+        "DE",
+        "GH",
+        "GI",
+        "GR",
+        "GL",
+        "GD",
+        "GP",
+        "GU",
+        "GT",
+        "GG",
+        "GN",
+        "GW",
+        "GY",
+        "HT",
+        "HM",
+        "VA",
+        "HN",
+        "HK",
+        "HU",
+        "IS",
+        "IN",
+        "ID",
+        "IR",
+        "IQ",
+        "IE",
+        "IM",
+        "IL",
+        "IT",
+        "JM",
+        "JP",
+        "JE",
+        "JO",
+        "KZ",
+        "KE",
+        "KI",
+        "KP",
+        "KR",
+        "KW",
+        "KG",
+        "LA",
+        "LV",
+        "LB",
+        "LS",
+        "LR",
+        "LY",
+        "LI",
+        "LT",
+        "LU",
+        "MO",
+        "MG",
+        "MW",
+        "MY",
+        "MV",
+        "ML",
+        "MT",
+        "MH",
+        "MQ",
+        "MR",
+        "MU",
+        "YT",
+        "MX",
+        "FM",
+        "MD",
+        "MC",
+        "MN",
+        "ME",
+        "MS",
+        "MA",
+        "MZ",
+        "MM",
+        "NA",
+        "NR",
+        "NP",
+        "NL",
+        "NC",
+        "NZ",
+        "NI",
+        "NE",
+        "NG",
+        "NU",
+        "NF",
+        "MP",
+        "NO",
+        "OM",
+        "PK",
+        "PW",
+        "PS",
+        "PA",
+        "PG",
+        "PY",
+        "PE",
+        "PH",
+        "PN",
+        "PL",
+        "PT",
+        "PR",
+        "QA",
+        "MK",
+        "RO",
+        "RU",
+        "RW",
+        "RE",
+        "BL",
+        "SH",
+        "KN",
+        "LC",
+        "MF",
+        "PM",
+        "VC",
+        "WS",
+        "SM",
+        "ST",
+        "SA",
+        "SN",
+        "RS",
+        "SC",
+        "SL",
+        "SG",
+        "SX",
+        "SK",
+        "SI",
+        "SB",
+        "SO",
+        "ZA",
+        "GS",
+        "SS",
+        "ES",
+        "LK",
+        "SD",
+        "SR",
+        "SJ",
+        "SE",
+        "CH",
+        "SY",
+        "TW",
+        "TJ",
+        "TZ",
+        "TH",
+        "TL",
+        "TG",
+        "TK",
+        "TO",
+        "TT",
+        "TN",
+        "TR",
+        "TM",
+        "TC",
+        "TV",
+        "UG",
+        "UA",
+        "AE",
+        "GB",
+        "UM",
+        "US",
+        "UY",
+        "UZ",
+        "VU",
+        "VE",
+        "VN",
+        "VG",
+        "VI",
+        "WF",
+        "EH",
+        "YE",
+        "ZM",
+        "ZW",
+        "AX"
+      ],
+      "description": "Enum representing all countries ISO 3166 alpha-2 codes."
+    },
+    "BusinessContact": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ],
+      "additionalProperties": false
+    },
+    "IBusinessContact": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ],
+      "additionalProperties": false
+    },
+    "IPostalAddress<PrivateContact>": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+        },
+        "zip": {
+          "type": "string",
+          "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+        },
+        "country": {
+          "$ref": "#/definitions/CountryCode",
+          "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "duns": {
+          "type": "string",
+          "description": "D-U-N-S number"
+        },
+        "vatId": {
+          "type": "string",
+          "description": "VAT identification number"
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Tax number"
+        },
+        "contact": {
+          "$ref": "#/definitions/PrivateContact"
+        }
+      },
+      "required": [
+        "city",
+        "companyName",
+        "contact",
+        "country",
+        "street",
+        "vatId",
+        "zip"
+      ],
+      "additionalProperties": false
+    },
+    "PrivateContact": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "firstname",
+        "lastname"
+      ],
+      "additionalProperties": false
+    },
+    "IPrivateContact": {
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "firstname",
+        "lastname",
+        "email"
+      ],
+      "additionalProperties": false
+    },
+    "SEPAInformation": {
+      "type": "object",
+      "properties": {
+        "iban": {
+          "type": "string"
+        },
+        "bic": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "iban",
+        "bic"
+      ],
+      "additionalProperties": false
+    },
+    "ISEPAMandatePaymentInformation": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/SEPAMandateType"
+        },
+        "mandateId": {
+          "type": "string",
+          "description": "The reference id of the mandate."
+        },
+        "dueDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the money will be withdrawn."
+        },
+        "signature": {
+          "$ref": "#/definitions/SignatureInformation",
+          "description": "A signature can be provided to confirm the mandate."
+        },
+        "debitor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string",
+                  "description": "D-U-N-S number"
+                },
+                "vatId": {
+                  "type": "string",
+                  "description": "VAT identification number"
+                },
+                "taxId": {
+                  "type": "string",
+                  "description": "Tax number"
+                },
+                "contact": {
+                  "$ref": "#/definitions/BusinessContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string",
+                  "description": "D-U-N-S number"
+                },
+                "vatId": {
+                  "type": "string",
+                  "description": "VAT identification number"
+                },
+                "taxId": {
+                  "type": "string",
+                  "description": "Tax number"
+                },
+                "contact": {
+                  "$ref": "#/definitions/PrivateContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            }
+          ]
+        },
+        "creditor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string",
+                  "description": "D-U-N-S number"
+                },
+                "vatId": {
+                  "type": "string",
+                  "description": "VAT identification number"
+                },
+                "taxId": {
+                  "type": "string",
+                  "description": "Tax number"
+                },
+                "contact": {
+                  "$ref": "#/definitions/BusinessContact"
+                },
+                "mandateReference": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "mandateReference",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string",
+                  "description": "D-U-N-S number"
+                },
+                "vatId": {
+                  "type": "string",
+                  "description": "VAT identification number"
+                },
+                "taxId": {
+                  "type": "string",
+                  "description": "Tax number"
+                },
+                "contact": {
+                  "$ref": "#/definitions/PrivateContact"
+                },
+                "mandateReference": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "mandateReference",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "mandateId",
+        "dueDate",
+        "debitor",
+        "creditor"
+      ],
+      "additionalProperties": false
+    },
+    "SEPAMandateType": {
+      "type": "string",
+      "enum": [
+        "one_off",
+        "recurring",
+        "b2b"
+      ],
+      "description": "Enum representing the different types of SEPA mandates.\n\n- 'one_off': A one-time mandate for a single payment.               The mandate becomes invalid after the payment is processed.              Example: One-time online purchases.\n\n- 'recurring': A recurring mandate for regular payments.                 The mandate remains valid until explicitly revoked.                Example: Subscriptions, rent payments.\n\n- 'b2b': A business-to-business (B2B) mandate for corporate transactions.           Requires the payer's bank to validate the mandate before processing.           Payments cannot be reversed after processing.          Example: Payments between companies."
+    },
+    "SignatureInformation": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of the signature."
+        },
+        "signature": {
+          "type": "string",
+          "description": "Can be an url to a provided signature document or a base64 encoded signature.",
+          "format": "url|base64"
+        }
+      },
+      "required": [
+        "date",
+        "signature"
+      ],
+      "additionalProperties": false
+    },
+    "InvoiceItem": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/InvoiceItemWithDiscount"
+        },
+        {
+          "$ref": "#/definitions/InvoiceItemWithoutDiscount"
+        }
+      ]
+    },
+    "InvoiceItemWithDiscount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/InvoiceItemUnit"
+        },
+        "price": {
+          "type": "number"
+        },
+        "currency": {
+          "$ref": "#/definitions/Currency"
+        },
+        "taxRate": {
+          "type": "number"
+        },
+        "discount": {
+          "type": "number"
+        },
+        "discountType": {
+          "$ref": "#/definitions/DiscountType"
+        }
+      },
+      "required": [
+        "currency",
+        "description",
+        "discount",
+        "discountType",
+        "id",
+        "price",
+        "quantity",
+        "taxRate",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "IInvoiceItemWithDiscount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/InvoiceItemUnit"
+        },
+        "price": {
+          "type": "number"
+        },
+        "currency": {
+          "$ref": "#/definitions/Currency"
+        },
+        "taxRate": {
+          "type": "number"
+        },
+        "discount": {
+          "type": "number"
+        },
+        "discountType": {
+          "$ref": "#/definitions/DiscountType"
+        }
+      },
+      "required": [
+        "currency",
+        "description",
+        "discount",
+        "discountType",
+        "id",
+        "price",
+        "quantity",
+        "taxRate",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "IInvoiceItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/InvoiceItemUnit"
+        },
+        "price": {
+          "type": "number"
+        },
+        "currency": {
+          "$ref": "#/definitions/Currency"
+        },
+        "taxRate": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "description",
+        "quantity",
+        "unit",
+        "price",
+        "currency",
+        "taxRate"
+      ],
+      "additionalProperties": false
+    },
+    "InvoiceItemUnit": {
+      "type": "string",
+      "enum": [
+        "piece",
+        "flat_rate",
+        "time_unit",
+        "project_day",
+        "m",
+        "cm",
+        "mm",
+        "km",
+        "in",
+        "ft",
+        "yd",
+        "mi",
+        "kg",
+        "g",
+        "mg",
+        "t",
+        "lb",
+        "oz",
+        "L",
+        "ml",
+        "gal",
+        "qt",
+        "pt",
+        "cup",
+        "fl oz",
+        "ms",
+        "s",
+        "h",
+        "d",
+        "w",
+        "M",
+        "y",
+        "m²",
+        "cm²",
+        "km²",
+        "in²",
+        "ft²",
+        "yd²",
+        "mi²",
+        "m³",
+        "cm³",
+        "km³",
+        "in³",
+        "ft³",
+        "yd³",
+        "mi³",
+        "km/h",
+        "mi/h",
+        "m/s",
+        "ft/s"
+      ]
+    },
+    "Currency": {
+      "type": "string",
+      "enum": [
+        "USD",
+        "EUR",
+        "GBP",
+        "JPY",
+        "CHF",
+        "AUD",
+        "CAD",
+        "NZD",
+        "CNY",
+        "INR",
+        "RUB",
+        "BRL",
+        "MXN",
+        "ZAR",
+        "SEK",
+        "NOK",
+        "DKK",
+        "PLN",
+        "TRY",
+        "AED",
+        "SAR",
+        "HKD",
+        "KRW",
+        "SGD",
+        "MYR",
+        "THB",
+        "IDR",
+        "ARS",
+        "BTC",
+        "ETH",
+        "SOL",
+        "DOGE",
+        "LTC",
+        "BCH",
+        "XRP",
+        "ADA",
+        "DOT",
+        "MATIC",
+        "UNI",
+        "LINK",
+        "AVAX"
+      ]
+    },
+    "DiscountType": {
+      "type": "string",
+      "enum": [
+        "fixed",
+        "percentage"
+      ]
+    },
+    "InvoiceItemWithoutDiscount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/InvoiceItemUnit"
+        },
+        "price": {
+          "type": "number"
+        },
+        "currency": {
+          "$ref": "#/definitions/Currency"
+        },
+        "taxRate": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "currency",
+        "description",
+        "id",
+        "price",
+        "quantity",
+        "taxRate",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "IInvoiceItemWithoutDiscount": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/InvoiceItemUnit"
+        },
+        "price": {
+          "type": "number"
+        },
+        "currency": {
+          "$ref": "#/definitions/Currency"
+        },
+        "taxRate": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "currency",
+        "description",
+        "id",
+        "price",
+        "quantity",
+        "taxRate",
+        "unit"
+      ]
+    },
+    "SEPAPaymentInformation": {
+      "type": "object",
+      "properties": {
+        "debitor": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BusinessPostalAddress"
+            },
+            {
+              "$ref": "#/definitions/PrivatePostalAddress"
+            }
+          ]
+        },
+        "creditor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string"
+                },
+                "vatId": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                },
+                "contact": {
+                  "$ref": "#/definitions/BusinessContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string"
+                },
+                "vatId": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                },
+                "contact": {
+                  "$ref": "#/definitions/PrivateContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "creditor",
+        "debitor"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessPostalAddress": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+        },
+        "zip": {
+          "type": "string",
+          "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+        },
+        "country": {
+          "$ref": "#/definitions/CountryCode",
+          "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "duns": {
+          "type": "string"
+        },
+        "vatId": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string"
+        },
+        "contact": {
+          "$ref": "#/definitions/BusinessContact"
+        }
+      },
+      "required": [
+        "city",
+        "companyName",
+        "contact",
+        "country",
+        "street",
+        "vatId",
+        "zip"
+      ],
+      "additionalProperties": false
+    },
+    "PrivatePostalAddress": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+        },
+        "zip": {
+          "type": "string",
+          "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+        },
+        "country": {
+          "$ref": "#/definitions/CountryCode",
+          "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "duns": {
+          "type": "string"
+        },
+        "vatId": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string"
+        },
+        "contact": {
+          "$ref": "#/definitions/PrivateContact"
+        }
+      },
+      "required": [
+        "city",
+        "companyName",
+        "contact",
+        "country",
+        "street",
+        "vatId",
+        "zip"
+      ],
+      "additionalProperties": false
+    },
+    "SEPAMandatePaymentInformation": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/SEPAMandateType"
+        },
+        "mandateId": {
+          "type": "string",
+          "description": "The reference id of the mandate."
+        },
+        "dueDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the money will be withdrawn."
+        },
+        "signature": {
+          "$ref": "#/definitions/SignatureInformation",
+          "description": "A signature can be provided to confirm the mandate."
+        },
+        "debitor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string"
+                },
+                "vatId": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                },
+                "contact": {
+                  "$ref": "#/definitions/BusinessContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string"
+                },
+                "vatId": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                },
+                "contact": {
+                  "$ref": "#/definitions/PrivateContact"
+                },
+                "iban": {
+                  "type": "string"
+                },
+                "bic": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "bic",
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "iban",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            }
+          ]
+        },
+        "creditor": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string"
+                },
+                "vatId": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                },
+                "contact": {
+                  "$ref": "#/definitions/BusinessContact"
+                },
+                "mandateReference": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "mandateReference",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "street": {
+                  "type": "string",
+                  "description": "The street name or address line, such as \"123 Elm Street\" or \"Main St\"."
+                },
+                "city": {
+                  "type": "string",
+                  "description": "The city or town associated with the address, like \"New York\" or \"Berlin\"."
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "The postal or ZIP code, such as \"10001\" or \"10115\"."
+                },
+                "country": {
+                  "$ref": "#/definitions/CountryCode",
+                  "description": "The country code in ISO 3166-1 alpha-2 format, like \"US\" or \"DE\"."
+                },
+                "companyName": {
+                  "type": "string"
+                },
+                "duns": {
+                  "type": "string"
+                },
+                "vatId": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                },
+                "contact": {
+                  "$ref": "#/definitions/PrivateContact"
+                },
+                "mandateReference": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "city",
+                "companyName",
+                "contact",
+                "country",
+                "mandateReference",
+                "street",
+                "vatId",
+                "zip"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "creditor",
+        "debitor",
+        "dueDate",
+        "mandateId",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "PartialInvoice": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        },
+        "type": {
+          "type": "string",
+          "const": "partial_invoice"
+        },
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData"
+        },
+        "paymentInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SEPAPaymentInformation"
+            },
+            {
+              "$ref": "#/definitions/SEPAMandatePaymentInformation"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvoiceItem"
+          }
+        },
+        "previousInvoiceId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "createdAt",
+        "id",
+        "items",
+        "paymentInformation",
+        "previousInvoiceId",
+        "servicePeriod",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "IPartialInvoice": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1",
+          "description": "The version of the invoice schema, you can find the schema at the"
+        },
+        "type": {
+          "type": "string",
+          "const": "partial_invoice"
+        },
+        "id": {
+          "type": "string",
+          "description": "The id of the invoice"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the invoice was created"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData",
+          "description": "When this is a correcting invoice, this field contains the data of the invoice that will be corrected"
+        },
+        "paymentInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ISEPAPaymentInformation"
+            },
+            {
+              "$ref": "#/definitions/ISEPAMandatePaymentInformation"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvoiceItem"
+          }
+        },
+        "previousInvoiceId": {
+          "type": "string",
+          "description": "The id of the previous invoice"
+        }
+      },
+      "required": [
+        "createdAt",
+        "id",
+        "items",
+        "paymentInformation",
+        "previousInvoiceId",
+        "servicePeriod",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "DefaultInvoice": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        },
+        "type": {
+          "type": "string",
+          "const": "invoice"
+        },
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData"
+        },
+        "paymentInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SEPAPaymentInformation"
+            },
+            {
+              "$ref": "#/definitions/SEPAMandatePaymentInformation"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvoiceItem"
+          }
+        }
+      },
+      "required": [
+        "createdAt",
+        "id",
+        "items",
+        "paymentInformation",
+        "servicePeriod",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "IDefaultInvoice": {
+      "type": "object",
+      "properties": {
+        "servicePeriod": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "version": {
+          "type": "string",
+          "const": "0.1",
+          "description": "The version of the invoice schema, you can find the schema at the"
+        },
+        "type": {
+          "type": "string",
+          "const": "invoice"
+        },
+        "id": {
+          "type": "string",
+          "description": "The id of the invoice"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the invoice was created"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData",
+          "description": "When this is a correcting invoice, this field contains the data of the invoice that will be corrected"
+        },
+        "paymentInformation": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ISEPAPaymentInformation"
+            },
+            {
+              "$ref": "#/definitions/ISEPAMandatePaymentInformation"
+            }
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvoiceItem"
+          }
+        }
+      },
+      "required": [
+        "createdAt",
+        "id",
+        "items",
+        "paymentInformation",
+        "servicePeriod",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "CancellationInvoice": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "0.1"
+        },
+        "type": {
+          "type": "string",
+          "const": "cancellation_invoice"
+        },
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData"
+        },
+        "cancellingId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cancellingId",
+        "createdAt",
+        "id",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "ICancellationInvoice": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "0.1",
+          "description": "The version of the invoice schema, you can find the schema at the"
+        },
+        "type": {
+          "type": "string",
+          "const": "cancellation_invoice"
+        },
+        "id": {
+          "type": "string",
+          "description": "The id of the invoice"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date when the invoice was created"
+        },
+        "correction": {
+          "$ref": "#/definitions/CorrectingInvoiceData",
+          "description": "When this is a correcting invoice, this field contains the data of the invoice that will be corrected"
+        },
+        "cancellingId": {
+          "type": "string",
+          "description": "The id of the invoice that is being cancelled"
+        }
+      },
+      "required": [
+        "cancellingId",
+        "createdAt",
+        "id",
+        "type",
+        "version"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

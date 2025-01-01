@@ -23,7 +23,7 @@ jobs:
   publish-npm:
     needs: build
     permissions:
-      id-token: write-all
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

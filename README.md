@@ -2,7 +2,7 @@
   <img src="https://avatars.githubusercontent.com/u/189235068?s=200" width="200px" align="center" alt="OIF logo" />
   <h1 align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width="25"> OIF Integration</h1> 
   <p align="center">
-    This library is the Typescript integration of the Open Invoice Format (OIF) schema.<br>  
+    This library is the TypeScript integration of the Open Invoice Format (OIF) schema.<br>  
     Create PDFs in OIF Format with ease and parse/validate JSON back and forth.
   </p>
 </p>

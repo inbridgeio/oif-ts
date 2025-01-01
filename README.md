@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://avatars.githubusercontent.com/u/189235068?s=200" width="200px" align="center" alt="Zod logo" />
+  <img src="https://avatars.githubusercontent.com/u/189235068?s=200" width="200px" align="center" alt="OIF logo" />
   <h1 align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width="25"> OIF Integration</h1> 
   <p align="center">
     This library is the Typescript integration of the Open Invoice Format (OIF) schema.<br>  
@@ -150,9 +150,10 @@ const invoiceObj = /* your OIF Object */;
 
 
 ## More Integration Libraries:
-- [`Typescript`](#): coming soon
-- [`Python`](#): coming soon
-- [`Java`](#): coming soon
+[`@inbridgeio/oif-ts`](https://github.com/inbridgeio/oif-ts): Work with OIF in TypeScript and JavaScript  
+[`Java`](#): coming soon  
+[`PHP`](#): coming soon  
+[`Python`](#): coming soon
 
 [Contribute your own](#contributing)
 

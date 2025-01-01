@@ -23,6 +23,8 @@ jobs:
   publish-npm:
     needs: build
     permissions:
+      contents: read
+      packages: write
       id-token: write
     runs-on: ubuntu-latest
     steps:

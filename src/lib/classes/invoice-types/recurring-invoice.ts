@@ -13,10 +13,10 @@ export class RecurringInvoice extends BaseInvoice {
     /**
      * @inheritDoc
      */
-    paymentInformation: Exclude<PaymentInformation, CashPayment>;
+    declare paymentInformation: Exclude<PaymentInformation, CashPayment>;
 
     /**
      * Reference to the subscription that this invoice is for
      */
     subscriptionId?: string;
-} 
+}

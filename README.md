@@ -4,8 +4,8 @@
 
   <p align="center">
    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/inbridgeio/oif-ts">
-   <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/inbridgeio/oif-ts">
-   <img alt="NPM Version" src="https://img.shields.io/npm/v/inbridgeio/oif-ts">
+   <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/%40inbridge%2Foif-ts">
+   <img alt="NPM Version" src="https://img.shields.io/npm/v/%40inbridge%2Foif-ts">
    <img alt="GitHub License" src="https://img.shields.io/github/license/inbridgeio/oif-ts">
    </p>
   <p align="center">

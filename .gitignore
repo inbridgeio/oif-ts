@@ -2,3 +2,4 @@ node_modules
 .idea
 test-files/
 dist/
+src/index.ts

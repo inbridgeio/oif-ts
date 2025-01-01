@@ -1,33 +1,40 @@
 <p align="center">
   <img src="https://avatars.githubusercontent.com/u/189235068?s=200" width="200px" align="center" alt="OIF logo" />
-  <h1 align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width="25"> OIF Integration</h1> 
+  <h1 align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width="25"> OIF Integration</h1>
+
+  <p align="center">
+   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/inbridgeio/oif-ts">
+   <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/inbridgeio/oif-ts">
+   <img alt="NPM Version" src="https://img.shields.io/npm/v/inbridgeio/oif-ts">
+   <img alt="GitHub License" src="https://img.shields.io/github/license/inbridgeio/oif-ts">
+   </p>
   <p align="center">
     This library is the TypeScript integration of the Open Invoice Format (OIF) schema.<br>  
     Create PDFs in OIF Format with ease and parse/validate JSON back and forth.
   </p>
 </p>
 
-
-
 ## What is the Open Invoice Format
 
-An open-source, JSON-based schema for invoices. This project is designed to offer a simple and reliable alternative to complex standards like **ZUGFeRD** and **XRechnung**. Built on [JSON schema](https://json-schema.org), it ensures easy validation and parsing across all programming languages.  
+An open-source, JSON-based schema for invoices. This project is designed to offer a simple and reliable alternative to
+complex standards like **ZUGFeRD** and **XRechnung**. Built on [JSON schema](https://json-schema.org), it ensures easy
+validation and parsing across all programming languages.  
 Have a look at the [Open Invoice Format GitHub Repository](https://github.com/inbridgeio/open-invoice-format)
 
 ---
 
 ## Table of Contents
 
-1. [Schema Details](#schema-details)  
+1. [Schema Details](#schema-details)
     - [How to use inside a PDF](#how-to-use-inside-a-pdf)
-2. [Getting Started](#getting-started)  
-    - [How to set specific Schema version](#how-to-set-specific-schema-version)  
-    - [Parsing JSON](#parsing-json)  
-        - [OIF JSON to Obj](#oif-json-to-obj)  
-        - [Obj to OIF JSON](#obj-to-oif-json)  
-    - [Handling OIF PDFs](#handling-oif-pdfs)  
-        - [How to extract the OIF JSON from a PDF](#how-to-extract-the-oif-json-from-a-pdf)  
-        - [How to add the OIF JSON to a PDF](#how-to-add-the-oif-json-to-a-pdf)  
+2. [Getting Started](#getting-started)
+    - [How to set specific Schema version](#how-to-set-specific-schema-version)
+    - [Parsing JSON](#parsing-json)
+        - [OIF JSON to Obj](#oif-json-to-obj)
+        - [Obj to OIF JSON](#obj-to-oif-json)
+    - [Handling OIF PDFs](#handling-oif-pdfs)
+        - [How to extract the OIF JSON from a PDF](#how-to-extract-the-oif-json-from-a-pdf)
+        - [How to add the OIF JSON to a PDF](#how-to-add-the-oif-json-to-a-pdf)
 3. [More Integration Libraries](#more-integration-libraries)
 4. [Contributing](#contributing)
 5. [Questions or Feedback?](#questions-or-feedback)
@@ -37,7 +44,9 @@ Have a look at the [Open Invoice Format GitHub Repository](https://github.com/in
 ## Schema details
 
 ### How to use inside a PDF:
-To use the open invoice format like ZugFeRD inside a PDF. Your JSON should be attached as `inbridge-oif.json` to the PDF.
+
+To use the open invoice format like ZugFeRD inside a PDF. Your JSON should be attached as `inbridge-oif.json` to the
+PDF.
 By using one of our [integration libraries](#integration-libraries) you can work with OIF as easy as pie!
 
 For the full schema, check out the [OIF GitHub Repository](https://github.com/inbridgeio/open-invoice-format)
@@ -49,8 +58,11 @@ For the full schema, check out the [OIF GitHub Repository](https://github.com/in
 The library loads based on your input the schema out of the OIF GitHub Repository to validate it.
 
 ### How to set specific Schema version
-You can set a specific version of the schema by passing the version as a string. Autocomplete for the versions is available.
-Additionally, you can use `latest` as version, to get the latest schema from main Branch of the [OIF GitHub Repository](https://github.com/inbridgeio/open-invoice-format).
+
+You can set a specific version of the schema by passing the version as a string. Autocomplete for the versions is
+available.
+Additionally, you can use `latest` as version, to get the latest schema from main Branch of
+the [OIF GitHub Repository](https://github.com/inbridgeio/open-invoice-format).
 
 ```typescript
 import {SchemaProvider} from "./schema-provider";
@@ -63,6 +75,7 @@ import {SchemaProvider} from "./schema-provider";
     }
 })()
 ```
+
 ---  
 
 ### Parsing JSON
@@ -112,23 +125,27 @@ const oifJson = /* your OIF JSON String */;
 To handle PDFs containing the OIF JSON we use [pdf-lib](https://github.com/Hopding/pdf-lib).
 
 ### How to extract the OIF JSON from a PDF:
+
 ```typescript
 import {getOIFFromPdf} from "@inbridgeio/oif/pdf-manipulator";
 import {readFileSync} from "fs";
 import {join} from "path";
 
-const file = readFileSync(join(__dirname, '..', 'test-files','oif.pdf'));
+const file = readFileSync(join(__dirname, '..', 'test-files', 'oif.pdf'));
 
 
 (async () => {
     console.log(await getOIFFromPdf(file));
 })()
 ```
+
 As file, you can use a `Buffer` or a `UInt8Array`. Here the variable `file` is a Buffer.
 It will return the parsed Invoice Obj or throw an `InvalidOIFException` if the JSON is invalid.
 
 ### How to add the OIF JSON to a PDF:
-If you generated a PDF out of your invoice, you can easily add the JSON and if its valid it will get added to the PDF. Otherwise it throws an `InvalidOIFException`.
+
+If you generated a PDF out of your invoice, you can easily add the JSON and if its valid it will get added to the PDF.
+Otherwise it throws an `InvalidOIFException`.
 
 ```typescript
 import {addOIFToPdf} from "@inbridgeio/oif/pdf-manipulator";
@@ -148,8 +165,8 @@ const invoiceObj = /* your OIF Object */;
 })()
 ```
 
-
 ## More Integration Libraries:
+
 [`@inbridgeio/oif-ts`](https://github.com/inbridgeio/oif-ts): Work with OIF in TypeScript and JavaScript  
 [`Java`](#): coming soon  
 [`PHP`](#): coming soon  

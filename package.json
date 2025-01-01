@@ -1,6 +1,6 @@
 {
   "name": "@inbridgeio/oif-ts",
-  "version": "2025.01",
+  "version": "2025.01.0",
   "type": "module",
   "description": "TypeScript integration for the Open Invoice Format (OIF) schema. Easily create OIF-compliant PDFs and parse/validate JSON.",
   "keywords": [

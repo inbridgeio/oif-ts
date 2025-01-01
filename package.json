@@ -16,6 +16,7 @@
     "dist"
   ],
   "scripts": {
+    "test": "",
     "build": "tsup",
     "prepublishOnly": "npm run build"
   },

@@ -3,10 +3,10 @@
   <h1 align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width="25"> OIF Integration</h1>
 
   <p align="center">
-   <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/inbridgeio/oif-ts">
-   <img alt="NPM Downloads" src="https://img.shields.io/npm/dm/%40inbridge%2Foif-ts">
-   <img alt="NPM Version" src="https://img.shields.io/npm/v/%40inbridge%2Foif-ts">
-   <img alt="GitHub License" src="https://img.shields.io/github/license/inbridgeio/oif-ts">
+   <a href="https://github.com/inbridgeio/oif-ts"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/inbridgeio/oif-ts"></a>
+   <a href="https://www.npmjs.com/@inbridge/oif-ts"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/%40inbridge%2Foif-ts"></a>
+   <a href="https://www.npmjs.com/@inbridge/oif-ts"><img alt="NPM Version" src="https://img.shields.io/npm/v/%40inbridge%2Foif-ts"></a>
+   <a href="https://github.com/inbridgeio/oif-ts/blob/main/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/inbridgeio/oif-ts"></a>
    </p>
   <p align="center">
     This library is the TypeScript integration of the Open Invoice Format (OIF) schema.<br>  
@@ -56,6 +56,12 @@ For the full schema, check out the [OIF GitHub Repository](https://github.com/in
 ## Getting Started
 
 The library loads based on your input the schema out of the OIF GitHub Repository to validate it.
+
+First, install the package via npm:
+
+```bash
+npm install @inbridge/oif-ts
+```
 
 ### How to set specific Schema version
 
